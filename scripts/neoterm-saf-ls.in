@@ -1,0 +1,36 @@
+#!@NEOTERM_PREFIX@/bin/sh
+set -e -u
+
+SCRIPTNAME=neoterm-saf-ls
+show_usage () {
+    echo "Usage: $SCRIPTNAME folder-uri"
+    echo "Lists the files and folders in a folder identified by a URI."
+    echo "You can get a folder URI by:"
+    echo "- Listing folders with neoterm-saf-ls"
+    echo "- Giving NeoTerm:API access to folders with neoterm-saf-managedir"
+    echo "- Listing the folders you gave NeoTerm:API access to with neoterm-saf-dirs"
+    echo "- Creating a folder with neoterm-saf-mkdir"
+    echo "The list is returned as a JSON array with one JSON object per entry."
+    echo "The objects have the keys:"
+    echo "- 'name' for the human-readable name"
+    echo "- 'uri' for URI you can use with the other neoterm-saf-* commands"
+    echo "- 'type' for the mime type"
+    echo "- 'length' for size in bytes if it's a file"
+    echo "You can recognize folders by the special mime type 'vnd.android.document/directory'."
+    echo " -h  show this help"
+    exit 0
+}
+
+while getopts :h option
+do
+    case "$option" in
+        h) show_usage;;
+        ?) echo "$SCRIPTNAME: illegal option -$OPTARG"; exit 1;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ $# != 1 ]; then echo "$SCRIPTNAME: Invalid argument count"; exit 1; fi
+
+@NEOTERM_PREFIX@/libexec/neoterm-api SAF --es safmethod listDirectory --es treeuri "$1"
+ 

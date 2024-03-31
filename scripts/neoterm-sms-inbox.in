@@ -1,0 +1,4 @@
+#!@NEOTERM_PREFIX@/bin/sh
+
+echo "neoterm-sms-inbox: This script has been replaced by neoterm-sms-list."
+exit 1

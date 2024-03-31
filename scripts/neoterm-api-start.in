@@ -1,0 +1,2 @@
+#!@NEOTERM_PREFIX@/bin/sh
+am startservice -n io.neoterm.api/.KeepAliveService
